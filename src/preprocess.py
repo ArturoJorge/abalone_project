@@ -1,6 +1,8 @@
 import pandas as pd
 from sklearn.preprocessing import OneHotEncoder
 
+# COMPOROBACION 1 2 3
+
 df = pd.read_csv("data/raw/abalone_raw.csv")
 y = pd.read_csv("data/raw/rings.csv")
 
