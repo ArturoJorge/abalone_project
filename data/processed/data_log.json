@@ -1,0 +1,15 @@
+[
+  {
+    "version": "v1",
+    "created_at": "2026-10-21",
+    "source": "data/raw/abalone_raw.csv",
+    "source_sha256": "5404cb5c67581630713d4906c7e8c6a38bb61998edc9bb60f88e3e3d1507c805",
+    "output": "data/processed/abalone_clean.csv",
+    "sha256": "e0b84b419a7fe8c43b1a2ad29dd621636210c6be1c7dfbb3613694732779ad39",
+    "parent_sha256": null,
+    "transformations": [
+      "added derived feature 'Age = Rings + 1.5'",
+      "encoded Sex with one-hot encoding (Sex_F, Sex_I, Sex_M)"
+    ]
+  }
+]
