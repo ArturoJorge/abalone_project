@@ -2,7 +2,8 @@
 
 ## Cómo usar el proyecto
 
-1. **Obtené el proyecto.** Clonalo con git (ver la sección "Clonar el repositorio") y abrí una terminal dentro de la carpeta raíz (la que contiene `preprocesamiento.py` y `requirements.txt`).
+### 1. **Obtené el proyecto.** 
+Clonalo con git (ver la sección "Clonar el repositorio") y abrí una terminal dentro de la carpeta raíz (la que contiene `preprocesamiento.py` y `requirements.txt`).
 ```bash
 # HTTPS
 git clone https://github.com/ArturoJorge/abalone_project.git
@@ -11,8 +12,8 @@ git clone https://github.com/ArturoJorge/abalone_project.git
 cd abalone_project
 ```
 
-2. **Preparé el entorno**
-### 1. Instalar Python 3.12.14
+### 2. **Preparé el entorno**
+#### 1. Instalar Python 3.12.14
 
 Verificá la versión instalada:
 
@@ -22,7 +23,7 @@ python --version
 
 Debería mostrar `Python 3.12.14`. Si no es así, instalala desde [python.org](https://www.python.org/downloads/) (o con `pyenv install 3.12.14` si usás pyenv).
 
-### 2. Crear un entorno virtual
+#### 2. Crear un entorno virtual
 
 Desde la carpeta raíz del proyecto:
 
@@ -30,7 +31,7 @@ Desde la carpeta raíz del proyecto:
 python -m venv .venv
 ```
 
-### 3. Activar el entorno virtual
+#### 3. Activar el entorno virtual
 
 - Linux / macOS:
   ```bash
@@ -47,7 +48,7 @@ python -m venv .venv
 
 Cuando el entorno está activo, la terminal muestra `(.venv)` al inicio de la línea.
 
-### 4. Instalar las dependencias
+#### 4. Instalar las dependencias
 
 Todas las librerías necesarias están en `requirements.txt`:
 
@@ -55,11 +56,13 @@ Todas las librerías necesarias están en `requirements.txt`:
 pip install -r requirements.txt
 ```
 
-3. **Colocá los datos de entrada** verificar que los archivos .csv de los datos crudos están en `data/raw/`:
+### 3. **Colocá los datos de entrada** 
+verificar que los archivos .csv de los datos crudos están en `data/raw/`:
    - `abalone_raw.csv`: dataset crudo con las columnas `Sex`, `Length`, `Diameter`, `Height`, `Whole_weight`, `Shucked_weight`, `Viscera_weight`, `Shell_weight`.
    - `rings.csv`: archivo con la columna `Rings`.
 
-4. **Ejecutá el preprocesamiento** con `python preprocesamiento.py`.
+### 4. **Ejecutá el preprocesamiento** 
+con `python preprocesamiento.py`.
 
 ```bash
 python preprocesamiento.py
