@@ -8,9 +8,10 @@ import optuna
 import joblib
 import hashlib
 from pathlib import Path
-from datetime import date
+from datetime import date, datetime
 import json
 import shutil
+import csv, os
 
 RANDOM_STATE = 42
 
@@ -53,7 +54,7 @@ def register_version(hiperparametros: list, metrics: list) -> None:
     if registry and registry[-1]["sha256"] == new_hash:
         print(
             f"Sin cambios (hash {new_hash[:12]}...): no se crea nueva versión.")
-        return
+        return len(registry)
 
     entry = {
         "version": f"v{len(registry) + 1}",
@@ -72,6 +73,8 @@ def register_version(hiperparametros: list, metrics: list) -> None:
                     f"abalone_clean_{entry['version']}_{new_hash[:8]}.csv")
 
     print(f"Nueva versión registrada: {entry['version']} ({new_hash[:12]}...)")
+    
+    return (len(registry) + 1)
 # ----------------------------------------------------------------------------------
 
 def main():
@@ -150,13 +153,39 @@ def main():
         hiperparametros.append(
         f"Mejores hiperparámetros: {best_params}"
     )   
+        version = register_version(hiperparametros, metrics)
 
+        log_path = "results/experiments_log.csv"
+        
+        def siguiente_id(log_path):
+            if not os.path.exists(log_path):
+                return "exp_001"
+            with open(log_path, newline="") as f:
+                ids = [int(r["experiment_id"].split("_")[1]) for r in csv.DictReader(f)]
+            return f"exp_{max(ids, default=0) + 1:03d}"
+
+        fila = {
+            "experiment_id": siguiente_id(log_path),
+            "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "model_version": version,
+            "hyperparameters": json.dumps(best_params),
+            "mae": mae,
+            "rmse": np.sqrt(mse),
+            "r2": r2,
+    }   
+        existe = os.path.exists(log_path)
+        with open(log_path, "a", newline="") as f:
+            writer = csv.DictWriter(f, fieldnames=fila.keys())
+            if not existe:
+                writer.writeheader()   # encabezado solo la primera vez
+            writer.writerow(fila)
+        
     else:
         rf = joblib.load("models/model_v1.pkl")
         print("Random forest cargado con exito")
         
 
-    register_version(hiperparametros, metrics)
+
 
 
 if __name__ == "__main__":
