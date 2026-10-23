@@ -117,7 +117,7 @@ def main():
         return -scores.mean()   # MAE de CV, a minimizar
 
 
-    train = input("Do you want to train the model again? (y/n)")
+    train = input("Do you want to train the model? (y/n)")
     if train == "y":
         study = optuna.create_study(
             direction="minimize",
@@ -139,6 +139,10 @@ def main():
         mae = mean_absolute_error(y_test, y_pred)
         mse = mean_squared_error(y_test, y_pred)
         r2 = r2_score(y_test, y_pred)
+        
+        print("Métricas en test:")
+        print(f"MAE: {mae}, MSE: {mse}, RMSE: {np.sqrt(mse)}, R2: {r2}")
+        print(f"Mejores hiperparámetros: {best_params}")
         
         metrics.append(
         f"MAE: {mae}, MSE: {mse}, RMSE: {np.sqrt(mse)}, R2: {r2}"
