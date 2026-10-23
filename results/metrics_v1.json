@@ -1,0 +1,14 @@
+[
+  {
+    "version": "v1",
+    "created_at": "2026-10-23",
+    "output": "models/model_v1.pkl",
+    "sha256": "1ad85f3217160c5d3f86a7540f3db4a1532c2574784742cbdd83a89bb643d9a1",
+    "metrics": [
+      "MAE: 0.006568042867441424, MSE: 0.0044448884178812775, RMSE: 0.06666999638429026, R2: 0.9995893947185158"
+    ],
+    "hiperparámetros": [
+      "Mejores hiperparámetros: {'n_estimators': 100, 'max_depth': 8, 'min_samples_leaf': 5, 'max_features': 1.0}"
+    ]
+  }
+]
