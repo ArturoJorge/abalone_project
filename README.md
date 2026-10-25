@@ -70,27 +70,26 @@ python -m venv .venv
 
 - Linux / macOS:
 
-  ```bash
+```bash
 
   source .venv/bin/activate
-
-  ```
+```
 
 - Windows (PowerShell):
 
-  ```powershell
+```powershell
 
   .venv\Scripts\Activate.ps1
 
-  ```
+```
 
 - Windows (cmd):
 
-  ```cmd
+```cmd
 
   .venv\Scripts\activate.bat
 
-  ```
+```
 
   
 
@@ -143,21 +142,6 @@ python preprocesamiento.py
 
 ```
 
-  
-
-## Notas
-
-  
-
-- Para recuperar una versión anterior, buscá en `data/processed/versions/` el archivo con el número de versión y el prefijo del hash correspondiente.
-
-- El hash depende del contenido exacto del archivo. Si cambia la versión de pandas o scikit-learn, el formato de salida podría variar levemente y generar una versión nueva aunque los datos sean equivalentes. Por eso conviene usar siempre las versiones fijadas en `requirements.txt`.
-
-- Editar `abalone_clean.csv` a mano genera una versión nueva en la próxima ejecución, pero esa modificación no queda descrita en `transformations`.
-
-- Para salir del entorno virtual, ejecutá `deactivate`.
-
-
 ### 5. Ejecutá el entrenamiento
 
 con `python train_model.py`.
@@ -177,3 +161,14 @@ En caso de no tener un modelo previamente entrenado _"n"_ dará error, por lo qu
 Para evaluar el modelo se genera automáticamente un mensaje en la consola indicando las métricas obtenidas por el modelo, tanto el **MAE CV** en entrenamiento como **MAE, MSE, RMSE y R$^2$** en testeo.
 
 Cualquier cambio realizado en el modelo se verá reflejado en: `results\metrics_v1.json`.
+
+
+## Notas
+
+- Para recuperar una versión anterior, buscá en `data/processed/versions/` el archivo con el número de versión y el prefijo del hash correspondiente.
+
+- El hash depende del contenido exacto del archivo. Si cambia la versión de pandas o scikit-learn, el formato de salida podría variar levemente y generar una versión nueva aunque los datos sean equivalentes. Por eso conviene usar siempre las versiones fijadas en `requirements.txt`.
+
+- Editar `abalone_clean.csv` a mano genera una versión nueva en la próxima ejecución, pero esa modificación no queda descrita en `transformations`.
+
+- Para salir del entorno virtual, ejecutá `deactivate`.

@@ -17,8 +17,9 @@ RANDOM_STATE = 42
 
 
 # ---------------------------------------------------------------- rutas
-MODEL_PATH = Path("models/model_v1.pkl")
-REGISTRY_PATH = Path("results/metrics_v1.json")
+MODEL_VERSION = "v1"
+MODEL_PATH = Path(f"models/model_{MODEL_VERSION}.pkl")
+REGISTRY_PATH = Path(f"results/metrics_{MODEL_VERSION}.json")
 SNAPSHOT_DIR = Path("models")
 # poner en True si tenes ganas de guardar copias de cada abalone_clean que se creo
 SAVE_SNAPSHOTS = False
@@ -82,27 +83,14 @@ def main():
     hiperparametros = []
     
     df = pd.read_csv("data/processed/abalone_clean.csv")
-    y = pd.read_csv("data/raw/rings.csv")
+    X = df.drop(columns=["Age"])
+    y = df["Age"]
 
 
     X_train, X_test, y_train, y_test = train_test_split(
-        df, y, test_size=0.2, random_state=RANDOM_STATE)
+        X, y, test_size=0.2, random_state=RANDOM_STATE)
     y_train_arr = y_train.values.ravel()
 
-    # Ahora tenemos que ver que hacemos porque en el 4b predecimos la cantidad de anillos que es lo mismo que Age -1.5 entonces
-    # podemos borrar la variable Age para usar el mismo codigo que antes o podemos re hacer el forest para que busque Age
-    # ---------------------
-    variables = df.columns
-    i = 0
-    for var in variables:
-        if var == 'Age':
-            variables = variables.delete(i)
-            break
-        else:
-            i += 1
-    # ---------------------
-
-    df = df[variables]
 
     cv = KFold(n_splits=5, shuffle=True, random_state=42)
 
@@ -136,7 +124,7 @@ def main():
         rf = RandomForestRegressor(**best_params, random_state=42, n_jobs=-1)
         rf.fit(X_train, y_train_arr)
 
-        joblib.dump(rf, "models/model_v1.pkl", compress=3)
+        joblib.dump(rf, MODEL_PATH, compress=3)
         
         y_pred = rf.predict(X_test)
         mae = mean_absolute_error(y_test, y_pred)
@@ -181,7 +169,7 @@ def main():
             writer.writerow(fila)
         
     else:
-        rf = joblib.load("models/model_v1.pkl")
+        rf = joblib.load(MODEL_PATH)
         print("Random forest cargado con exito")
         
 
