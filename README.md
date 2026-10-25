@@ -176,5 +176,9 @@ Cualquier cambio realizado en el modelo se verá reflejado en: `results\metrics_
 ## Resultados
 v2:
 RandomForest
-MAE: 1.5409976212013707, MSE: 4.837489660367062, RMSE: 2.199429394267309, R2: 0.5531274090748692
+| Modelo/Metrica | MAE | MSE | RMSE | R2 |
+| -------- | -------- | -------- | -------- | -------- |
+| RandomForest_old  |  1.535  | 4.830  | 2.197 | 0.553 |
+| RandomForest_new  | 1.540  | 4.837 | 2.199 | 0.553 |
+
 Mejores hiperparámetros: {'n_estimators': 650, 'max_depth': 9, 'min_samples_leaf': 2, 'max_features': 0.7}.
