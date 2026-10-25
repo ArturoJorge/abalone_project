@@ -12,6 +12,10 @@ from datetime import date, datetime
 import json
 import shutil
 import csv, os
+from sklearn.pipeline import Pipeline, make_pipeline
+from sklearn.compose import ColumnTransformer
+from sklearn.preprocessing import RobustScaler, PowerTransformer
+from sklearn.base import clone
 
 RANDOM_STATE = 42
 
@@ -77,7 +81,11 @@ def register_version(hiperparametros: list, metrics: list) -> None:
     
     return (len(registry) + 1)
 # ----------------------------------------------------------------------------------
+numericas = ["Length", "Diameter", "Height", "Whole_weight", "Shucked_weight",
+             "Viscera_weight", "Shell_weight"]
+categoricas = ["Sex_M", "Sex_I", "Sex_F"]
 
+#---------------------------------------------------------------------------------------------------------------------------#
 def main():
     metrics = []
     hiperparametros = []
@@ -96,14 +104,32 @@ def main():
 
 
     def objective(trial):
+        pipeline_numericas = Pipeline(steps=[
+            ('scaler', RobustScaler()),
+            ('power', PowerTransformer(method='yeo-johnson', standardize=False))
+        ])
+
+
+        preprocesador_final = ColumnTransformer(
+            transformers=[
+                ('numericas', pipeline_numericas, numericas),
+                ('categoricas', 'passthrough', categoricas)
+            ],
+            verbose_feature_names_out=False
+        ).set_output(transform="pandas")
+
+        
         params = {
             "n_estimators": trial.suggest_int("n_estimators", 100, 500, step=50),
             "max_depth": trial.suggest_int("max_depth", 4, 24),
             "min_samples_leaf": trial.suggest_int("min_samples_leaf", 5, 15),
-            "max_features": trial.suggest_categorical("max_features", ["sqrt", "log2", 0.5, 1.0]),
+            "max_features": trial.suggest_categorical("max_features", ["sqrt", "log2", 0.5, 1.0])
         }
-        model = RandomForestRegressor(**params, random_state=42, n_jobs=-1)
-        scores = cross_val_score(model, X_train, y_train_arr, cv=cv,
+        final_pipeline = Pipeline(steps=[
+                    ('preprocessor', preprocesador_final),
+                    ('regressor', (RandomForestRegressor(**params)))
+                ])
+        scores = cross_val_score(final_pipeline, X_train, y_train_arr, cv=cv,
                                 scoring="neg_mean_absolute_error")
         return -scores.mean()   # MAE de CV, a minimizar
 
@@ -120,13 +146,29 @@ def main():
         print("Mejores hiperparámetros:", best_params)
         print("MAE CV:", study.best_value)
 
-        # Modelo final con los mejores hiperparámetros
-        rf = RandomForestRegressor(**best_params, random_state=42, n_jobs=-1)
-        rf.fit(X_train, y_train_arr)
-
-        joblib.dump(rf, MODEL_PATH, compress=3)
+        pipeline_numericas = Pipeline(steps=[
+                    ('scaler', RobustScaler()),
+                    ('power', PowerTransformer(method='yeo-johnson', standardize=False))
+                ])
         
-        y_pred = rf.predict(X_test)
+        
+        preprocesador_final = ColumnTransformer(
+            transformers=[
+                ('numericas', pipeline_numericas, numericas),
+                ('categoricas', 'passthrough', categoricas)
+                ],
+            verbose_feature_names_out=False
+         ).set_output(transform="pandas")
+        # Modelo final con los mejores hiperparámetros
+        modelof =  Pipeline(steps=[
+            ('preprocessor', preprocesador_final),
+            ('regressor', (RandomForestRegressor(**best_params)))
+        ])
+        modelof.fit(X_train, y_train_arr)
+
+        joblib.dump(modelof, MODEL_PATH, compress=3)
+        
+        y_pred = modelof.predict(X_test)
         mae = mean_absolute_error(y_test, y_pred)
         mse = mean_squared_error(y_test, y_pred)
         r2 = r2_score(y_test, y_pred)
@@ -169,8 +211,8 @@ def main():
             writer.writerow(fila)
         
     else:
-        rf = joblib.load(MODEL_PATH)
-        print("Random forest cargado con exito")
+        modelof = joblib.load(MODEL_PATH)
+        print("Modelo cargado con exito")
         
 
 
@@ -178,3 +220,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
