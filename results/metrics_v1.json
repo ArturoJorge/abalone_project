@@ -22,5 +22,17 @@
     "hiperparámetros": [
       "Mejores hiperparámetros: {'n_estimators': 250, 'max_depth': 9, 'min_samples_leaf': 10, 'max_features': 1.0}"
     ]
+  },
+  {
+    "version": "v3",
+    "created_at": "2026-10-25",
+    "output": "models/model_v1.pkl",
+    "sha256": "9c10704745f1f7fb0202c3c30323d2e0cfdec76a7e8490c8ee013eba328506bb",
+    "metrics": [
+      "MAE: 1.5359399182945355, MSE: 4.830269842774025, RMSE: 2.197787488082964, R2: 0.5537943538789564"
+    ],
+    "hiperparámetros": [
+      "Mejores hiperparámetros: {'n_estimators': 250, 'max_depth': 9, 'min_samples_leaf': 10, 'max_features': 1.0}"
+    ]
   }
 ]
