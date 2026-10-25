@@ -173,10 +173,12 @@ Cualquier cambio realizado en el modelo se verá reflejado en: `results\metrics_
 
 - Para salir del entorno virtual, ejecutá `deactivate`.
 
-## Resultados del experimento Enet
-El desempeño fue similar sino que peor al del random forest. El experimento no fue fructifero.
-
+## Resultados
+v2:
+RandomForest
 | Modelo/Metrica | MAE | MSE | RMSE | R2 |
 | -------- | -------- | -------- | -------- | -------- |
-| RandomForest  |  1.535  | 4.830  | 2.197 | 0.553 |
-| Enet_v3  | 1.617  | 4.885 | 2.210 | 0.548 |
+| RandomForest_old  |  1.535  | 4.830  | 2.197 | 0.553 |
+| RandomForest_new  | 1.540  | 4.837 | 2.199 | 0.553 |
+
+Mejores hiperparámetros: {'n_estimators': 650, 'max_depth': 9, 'min_samples_leaf': 2, 'max_features': 0.7}.

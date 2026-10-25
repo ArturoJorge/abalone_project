@@ -21,7 +21,7 @@ RANDOM_STATE = 42
 
 
 # ---------------------------------------------------------------- rutas
-MODEL_VERSION = "enet-v1"
+MODEL_VERSION = "v2"
 MODEL_PATH = Path(f"models/model_{MODEL_VERSION}.pkl")
 REGISTRY_PATH = Path(f"results/metrics_{MODEL_VERSION}.json")
 SNAPSHOT_DIR = Path("models")
@@ -120,10 +120,10 @@ def main():
 
         
         params = {
-            "alpha": trial.suggest_float("alpha", 1e-4, 10.0, log=True),
-            "l1_ratio": trial.suggest_float("l1_ratio", 0.0, 1.0),
-            "selection": trial.suggest_categorical("selection", ["cyclic", "random"]),
-            "max_iter": 10000,
+            "n_estimators": trial.suggest_int("n_estimators", 100, 1000, step=50),
+            "max_depth": trial.suggest_int("max_depth", 2, 24),
+            "min_samples_leaf": trial.suggest_int("min_samples_leaf", 1, 20),
+            "max_features": trial.suggest_categorical("max_features", ["sqrt", "log2", 0.3, 0.5, 0.7, 1.0]),
         }
         final_pipeline = Pipeline(steps=[
                     ('preprocessor', preprocesador_final),
@@ -163,7 +163,7 @@ def main():
         # Modelo final con los mejores hiperparámetros
         modelof =  Pipeline(steps=[
             ('preprocessor', preprocesador_final),
-            ('regressor', (ElasticNet(**best_params)))
+            ('regressor', (RandomForestRegressor(**best_params)))
         ])
 
         modelof.fit(X_train, y_train_arr)
