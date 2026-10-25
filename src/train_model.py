@@ -15,7 +15,7 @@ import csv, os
 from sklearn.pipeline import Pipeline, make_pipeline
 from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import RobustScaler, PowerTransformer
-from sklearn.base import clone
+from sklearn.linear_model import ElasticNet
 
 RANDOM_STATE = 42
 
@@ -127,11 +127,11 @@ def main():
         }
         final_pipeline = Pipeline(steps=[
                     ('preprocessor', preprocesador_final),
-                    ('regressor', (RandomForestRegressor(**params)))
+                    ('regressor', (ElasticNet(**params)))
                 ])
         scores = cross_val_score(final_pipeline, X_train, y_train_arr, cv=cv,
                                 scoring="neg_mean_absolute_error")
-        return -scores.mean()   # MAE de CV, a minimizar
+        return -scores.mean()  
 
 
     train = input("Do you want to train the model? (y/n)")
@@ -140,12 +140,13 @@ def main():
             direction="minimize",
             sampler=optuna.samplers.TPESampler(seed=42),
         )
-        study.optimize(objective, n_trials=10, show_progress_bar=True)
+        study.optimize(objective, n_trials=40, show_progress_bar=True)
 
         best_params = study.best_params
+        best_params["max_iter"] = 10000  # lo dejo fijo
         print("Mejores hiperparámetros:", best_params)
         print("MAE CV:", study.best_value)
-
+ 
         pipeline_numericas = Pipeline(steps=[
                     ('scaler', RobustScaler()),
                     ('power', PowerTransformer(method='yeo-johnson', standardize=False))
@@ -164,6 +165,7 @@ def main():
             ('preprocessor', preprocesador_final),
             ('regressor', (RandomForestRegressor(**best_params)))
         ])
+
         modelof.fit(X_train, y_train_arr)
 
         joblib.dump(modelof, MODEL_PATH, compress=3)
