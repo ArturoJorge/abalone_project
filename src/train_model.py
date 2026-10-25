@@ -16,12 +16,13 @@ from sklearn.pipeline import Pipeline, make_pipeline
 from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import RobustScaler, PowerTransformer
 from sklearn.base import clone
+from sklearn.neighbors import KNeighborsRegressor
 
 RANDOM_STATE = 42
 
 
 # ---------------------------------------------------------------- rutas
-MODEL_VERSION = "v1"
+MODEL_VERSION = "KNRegressor-v1"
 MODEL_PATH = Path(f"models/model_{MODEL_VERSION}.pkl")
 REGISTRY_PATH = Path(f"results/metrics_{MODEL_VERSION}.json")
 SNAPSHOT_DIR = Path("models")
@@ -120,14 +121,14 @@ def main():
 
         
         params = {
-            "n_estimators": trial.suggest_int("n_estimators", 100, 500, step=50),
-            "max_depth": trial.suggest_int("max_depth", 4, 24),
-            "min_samples_leaf": trial.suggest_int("min_samples_leaf", 5, 15),
-            "max_features": trial.suggest_categorical("max_features", ["sqrt", "log2", 0.5, 1.0])
+            "n_neighbors": trial.suggest_int("n_neighbors", 5, 500, step=5),
+            "algorithm": trial.suggest_categorical("algorithm", ["auto", "ball_tree", "kd_tree", "brute"]),
+            "leaf_size": trial.suggest_int("leaf_size", 10, 100),
+            "weights": trial.suggest_categorical("weights", ["uniform", "distance"])
         }
         final_pipeline = Pipeline(steps=[
                     ('preprocessor', preprocesador_final),
-                    ('regressor', (RandomForestRegressor(**params)))
+                    ('regressor', (KNeighborsRegressor(**params)))
                 ])
         scores = cross_val_score(final_pipeline, X_train, y_train_arr, cv=cv,
                                 scoring="neg_mean_absolute_error")
@@ -140,7 +141,7 @@ def main():
             direction="minimize",
             sampler=optuna.samplers.TPESampler(seed=42),
         )
-        study.optimize(objective, n_trials=10, show_progress_bar=True)
+        study.optimize(objective, n_trials=50, show_progress_bar=True)
 
         best_params = study.best_params
         print("Mejores hiperparámetros:", best_params)
@@ -162,7 +163,7 @@ def main():
         # Modelo final con los mejores hiperparámetros
         modelof =  Pipeline(steps=[
             ('preprocessor', preprocesador_final),
-            ('regressor', (RandomForestRegressor(**best_params)))
+            ('regressor', (KNeighborsRegressor(**best_params)))
         ])
         modelof.fit(X_train, y_train_arr)
 

@@ -1,0 +1,26 @@
+[
+  {
+    "version": "v1",
+    "created_at": "2026-10-25",
+    "output": "models/model_KNRegressor-v1.pkl",
+    "sha256": "7bf8b8a04efd2adba0e20eeada08d3203118a63bc3e577559e2fd6af0c81f5cd",
+    "metrics": [
+      "MAE: 1.5758031442241969, MSE: 5.263933209647495, RMSE: 2.2943263084503682, R2: 0.5137338501983432"
+    ],
+    "hiperparámetros": [
+      "Mejores hiperparámetros: {'n_neighbors': 35, 'algorithm': 'ball_tree', 'leaf_size': 18, 'weights': 'uniform'}"
+    ]
+  },
+  {
+    "version": "v2",
+    "created_at": "2026-10-25",
+    "output": "models/model_KNRegressor-v1.pkl",
+    "sha256": "5abe694ad743b26c08de91e4f42528652c1361f00e985d116a90a981d5c83a1f",
+    "metrics": [
+      "MAE: 1.55370952412202, MSE: 5.1155874165995545, RMSE: 2.2617664372343036, R2: 0.5274375836523484"
+    ],
+    "hiperparámetros": [
+      "Mejores hiperparámetros: {'n_neighbors': 25, 'algorithm': 'ball_tree', 'leaf_size': 29, 'weights': 'distance'}"
+    ]
+  }
+]
