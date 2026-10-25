@@ -172,3 +172,9 @@ Cualquier cambio realizado en el modelo se verá reflejado en: `results\metrics_
 - Editar `abalone_clean.csv` a mano genera una versión nueva en la próxima ejecución, pero esa modificación no queda descrita en `transformations`.
 
 - Para salir del entorno virtual, ejecutá `deactivate`.
+
+## Resultados
+v2:
+RandomForest
+MAE: 1.5409976212013707, MSE: 4.837489660367062, RMSE: 2.199429394267309, R2: 0.5531274090748692
+Mejores hiperparámetros: {'n_estimators': 650, 'max_depth': 9, 'min_samples_leaf': 2, 'max_features': 0.7}

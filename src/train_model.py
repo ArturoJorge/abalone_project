@@ -21,7 +21,7 @@ RANDOM_STATE = 42
 
 
 # ---------------------------------------------------------------- rutas
-MODEL_VERSION = "v1"
+MODEL_VERSION = "v2"
 MODEL_PATH = Path(f"models/model_{MODEL_VERSION}.pkl")
 REGISTRY_PATH = Path(f"results/metrics_{MODEL_VERSION}.json")
 SNAPSHOT_DIR = Path("models")
@@ -120,10 +120,10 @@ def main():
 
         
         params = {
-            "n_estimators": trial.suggest_int("n_estimators", 100, 500, step=50),
-            "max_depth": trial.suggest_int("max_depth", 4, 24),
-            "min_samples_leaf": trial.suggest_int("min_samples_leaf", 5, 15),
-            "max_features": trial.suggest_categorical("max_features", ["sqrt", "log2", 0.5, 1.0])
+            "n_estimators": trial.suggest_int("n_estimators", 100, 1000, step=50),
+            "max_depth": trial.suggest_int("max_depth", 2, 24),
+            "min_samples_leaf": trial.suggest_int("min_samples_leaf", 1, 20),
+            "max_features": trial.suggest_categorical("max_features", ["sqrt", "log2", 0.3, 0.5, 0.7, 1.0]),
         }
         final_pipeline = Pipeline(steps=[
                     ('preprocessor', preprocesador_final),
