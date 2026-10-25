@@ -120,7 +120,7 @@ def main():
 
         
         params = {
-            "n_estimators": trial.suggest_int("n_estimators", 150, 1000, step=50),
+            "n_estimators": trial.suggest_int("n_estimators", 100, 1000, step=50),
             "max_depth": trial.suggest_int("max_depth", 2, 24),
             "min_samples_leaf": trial.suggest_int("min_samples_leaf", 1, 20),
             "max_features": trial.suggest_categorical("max_features", ["sqrt", "log2", 0.3, 0.5, 0.7, 1.0]),
