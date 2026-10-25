@@ -172,3 +172,11 @@ Cualquier cambio realizado en el modelo se verá reflejado en: `results\metrics_
 - Editar `abalone_clean.csv` a mano genera una versión nueva en la próxima ejecución, pero esa modificación no queda descrita en `transformations`.
 
 - Para salir del entorno virtual, ejecutá `deactivate`.
+
+## Resultados del experimento Enet
+El desempeño fue similar sino que peor al del random forest. El experimento no fue fructifero.
+
+| Modelo/Metrica | MAE | MSE | RMSE | R2 |
+| -------- | -------- | -------- | -------- | -------- |
+| RandomForest  |  1.535  | 4.830  | 2.197 | 0.553 |
+| Enet_v3  | 1.617  | 4.885 | 2.210 | 0.548 |

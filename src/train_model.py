@@ -15,13 +15,13 @@ import csv, os
 from sklearn.pipeline import Pipeline, make_pipeline
 from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import RobustScaler, PowerTransformer
-from sklearn.base import clone
+from sklearn.linear_model import ElasticNet
 
 RANDOM_STATE = 42
 
 
 # ---------------------------------------------------------------- rutas
-MODEL_VERSION = "v1"
+MODEL_VERSION = "enet-v1"
 MODEL_PATH = Path(f"models/model_{MODEL_VERSION}.pkl")
 REGISTRY_PATH = Path(f"results/metrics_{MODEL_VERSION}.json")
 SNAPSHOT_DIR = Path("models")
@@ -120,18 +120,18 @@ def main():
 
         
         params = {
-            "n_estimators": trial.suggest_int("n_estimators", 100, 500, step=50),
-            "max_depth": trial.suggest_int("max_depth", 4, 24),
-            "min_samples_leaf": trial.suggest_int("min_samples_leaf", 5, 15),
-            "max_features": trial.suggest_categorical("max_features", ["sqrt", "log2", 0.5, 1.0])
+            "alpha": trial.suggest_float("alpha", 1e-4, 10.0, log=True),
+            "l1_ratio": trial.suggest_float("l1_ratio", 0.0, 1.0),
+            "selection": trial.suggest_categorical("selection", ["cyclic", "random"]),
+            "max_iter": 10000,
         }
         final_pipeline = Pipeline(steps=[
                     ('preprocessor', preprocesador_final),
-                    ('regressor', (RandomForestRegressor(**params)))
+                    ('regressor', (ElasticNet(**params)))
                 ])
         scores = cross_val_score(final_pipeline, X_train, y_train_arr, cv=cv,
                                 scoring="neg_mean_absolute_error")
-        return -scores.mean()   # MAE de CV, a minimizar
+        return -scores.mean()  
 
 
     train = input("Do you want to train the model? (y/n)")
@@ -140,12 +140,13 @@ def main():
             direction="minimize",
             sampler=optuna.samplers.TPESampler(seed=42),
         )
-        study.optimize(objective, n_trials=10, show_progress_bar=True)
+        study.optimize(objective, n_trials=40, show_progress_bar=True)
 
         best_params = study.best_params
+        best_params["max_iter"] = 10000  # lo dejo fijo
         print("Mejores hiperparámetros:", best_params)
         print("MAE CV:", study.best_value)
-
+ 
         pipeline_numericas = Pipeline(steps=[
                     ('scaler', RobustScaler()),
                     ('power', PowerTransformer(method='yeo-johnson', standardize=False))
@@ -162,8 +163,9 @@ def main():
         # Modelo final con los mejores hiperparámetros
         modelof =  Pipeline(steps=[
             ('preprocessor', preprocesador_final),
-            ('regressor', (RandomForestRegressor(**best_params)))
+            ('regressor', (ElasticNet(**best_params)))
         ])
+
         modelof.fit(X_train, y_train_arr)
 
         joblib.dump(modelof, MODEL_PATH, compress=3)
