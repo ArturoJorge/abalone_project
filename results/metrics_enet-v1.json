@@ -1,0 +1,38 @@
+[
+  {
+    "version": "v1",
+    "created_at": "2026-10-25",
+    "output": "models/model_enet-v1.pkl",
+    "sha256": "0c3dd71802c2c894c6669e16c44a8aa3c70804a96c9ee0b1cff4304649d99c7b",
+    "metrics": [
+      "MAE: 1.6153480092245913, MSE: 4.881132676150435, RMSE: 2.2093285577637465, R2: 0.5490957999329031"
+    ],
+    "hiperparámetros": [
+      "Mejores hiperparámetros: {'alpha': 0.0008111941985431928, 'l1_ratio': 0.18340450985343382, 'max_iter': 10000}"
+    ]
+  },
+  {
+    "version": "v2",
+    "created_at": "2026-10-25",
+    "output": "models/model_enet-v1.pkl",
+    "sha256": "198e1ae4ebde90de60a7f6144d148757ad520bce012f1bd2b9357e6d16ed8c49",
+    "metrics": [
+      "MAE: 1.616545057649114, MSE: 4.883897936532664, RMSE: 2.209954283810564, R2: 0.5488403535840016"
+    ],
+    "hiperparámetros": [
+      "Mejores hiperparámetros: {'alpha': 0.0009813353818872229, 'l1_ratio': 0.07930707218331488, 'max_iter': 10000}"
+    ]
+  },
+  {
+    "version": "v3",
+    "created_at": "2026-10-25",
+    "output": "models/model_enet-v1.pkl",
+    "sha256": "96bef03c9365c6d288a7f6439fff75641697aec65bb2ae0a60f51b46078d27c7",
+    "metrics": [
+      "MAE: 1.6170328976021318, MSE: 4.885396472218195, RMSE: 2.2102933000437286, R2: 0.5487019234122799"
+    ],
+    "hiperparámetros": [
+      "Mejores hiperparámetros: {'alpha': 0.0010571040063270351, 'l1_ratio': 0.05164557443165055, 'selection': 'random', 'max_iter': 10000}"
+    ]
+  }
+]
