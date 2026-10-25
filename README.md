@@ -180,5 +180,3 @@ El desempeño fue similar sino que peor al del random forest. El experimento no 
 | -------- | -------- | -------- | -------- | -------- |
 | RandomForest  |  1.535  | 4.830  | 2.197 | 0.553 |
 | Enet_v3  | 1.617  | 4.885 | 2.210 | 0.548 |
-
-MAE: 1.5359399182945355, MSE: 4.830269842774025, RMSE: 2.197787488082964, R2: 0.5537943538789564
