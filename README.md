@@ -125,20 +125,13 @@ verificar que los archivos .csv de los datos crudos están en `data/raw/`:
 
 ### 4. **Ejecutá el preprocesamiento**
 
-Entrar en la carpeta src
+
+
+Ejecutar el preprocesamiento con `python preprocess.py`.  
 
 ```bash
 
-cd abalone_project\src
-
-```
-
-
-Ejecutar el preprocesamiento con `python preprocesamiento.py`.  
-
-```bash
-
-python preprocesamiento.py
+python src/preprocess.py
 
 ```
 
@@ -148,7 +141,7 @@ con `python train_model.py`.
 
 ```bash
 
-python train_model.py
+python src/train_model.py
 
 ```
 

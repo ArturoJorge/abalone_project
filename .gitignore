@@ -1,3 +1,5 @@
 .env
+.venv/
+.vgit statusenv
 __pycache__/
 .vscode/
