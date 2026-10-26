@@ -99,8 +99,8 @@ Cuando el entorno está activo, la terminal muestra `(.venv)` al inicio de la l�
 
 #### 4. Instalar las dependencias
 
-  
 
+Se debe instalar todas las librerías necesarias en el entorno virtual
 Todas las librerías necesarias están en `requirements.txt`:
 
   
@@ -160,7 +160,7 @@ En caso de no tener un modelo previamente entrenado _"n"_ dará error, por lo qu
 
 Para evaluar el modelo se genera automáticamente un mensaje en la consola indicando las métricas obtenidas por el modelo, tanto el **MAE CV** en entrenamiento como **MAE, MSE, RMSE y R$^2$** en testeo.
 
-Cualquier cambio realizado en el modelo se verá reflejado en: `results\metrics_v1.json`.
+Cualquier cambio realizado en el modelo se verá reflejado en: `results\metrics_vX.json`. La X dependerá del número de versión que se indique dentro de "train_model.py"
 
 
 ## Notas
