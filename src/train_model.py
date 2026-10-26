@@ -127,7 +127,7 @@ def main():
         }
         final_pipeline = Pipeline(steps=[
                     ('preprocessor', preprocesador_final),
-                    ('regressor', (ElasticNet(**params)))
+                    ('regressor', RandomForestRegressor(**params, random_state=42, n_jobs=-1))
                 ])
         scores = cross_val_score(final_pipeline, X_train, y_train_arr, cv=cv,
                                 scoring="neg_mean_absolute_error")
@@ -143,7 +143,6 @@ def main():
         study.optimize(objective, n_trials=40, show_progress_bar=True)
 
         best_params = study.best_params
-        best_params["max_iter"] = 10000  # lo dejo fijo
         print("Mejores hiperparámetros:", best_params)
         print("MAE CV:", study.best_value)
  
@@ -163,7 +162,7 @@ def main():
         # Modelo final con los mejores hiperparámetros
         modelof =  Pipeline(steps=[
             ('preprocessor', preprocesador_final),
-            ('regressor', (RandomForestRegressor(**best_params)))
+            ('regressor', RandomForestRegressor(**best_params, random_state=42, n_jobs=-1))
         ])
 
         modelof.fit(X_train, y_train_arr)
